@@ -1,0 +1,136 @@
+local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/Dynissimo/main/Scripts/AkaliNotif.lua"))()
+local Notify = AkaliNotif.Notify
+
+-- notification pussy
+local function showNotification()
+    Notify({
+        Title = "https://discord.com/invite/HE6VuGdn4p",
+        Description = "Made by ;guts",
+        Duration = 15
+    })
+end
+
+-- type shhhhhhh hahanjggrr
+getgenv().HitPart = "HumanoidRootPart"
+getgenv().Prediction = 0.165241
+getgenv().Enabled = true
+
+-- FOV settings
+getgenv().ShowFOV = true
+getgenv().Filled = false
+getgenv().FOVSize = 150
+getgenv().FOVTransparency = 0.2
+getgenv().FOVThickness = 2.0
+getgenv().FOVColor = Color3.new(1, 0, 0)
+
+-- fov circle
+local SilentAimFOVCircle = Drawing.new("Circle")
+SilentAimFOVCircle.Color = getgenv().FOVColor
+SilentAimFOVCircle.Visible = getgenv().ShowFOV
+SilentAimFOVCircle.Filled = getgenv().Filled
+SilentAimFOVCircle.Radius = getgenv().FOVSize
+SilentAimFOVCircle.Transparency = getgenv().FOVTransparency
+SilentAimFOVCircle.Thickness = getgenv().FOVThickness
+
+-- line type shit
+local Line = Drawing.new("Line")
+Line.Visible = false
+Line.Color = Color3.new(1, 0, 0)
+Line.Thickness = 2
+
+-- esp from highlight idk
+local HighlightBox = Drawing.new("Square")
+HighlightBox.Visible = false
+HighlightBox.Color = Color3.new(1, 0, 0)  -- Red color for highlight
+HighlightBox.Transparency = 0.08  -- Lower transparency for highlight
+HighlightBox.Thickness = 2
+
+-- Microsoft at ur service
+local Players = game:GetService("Players")
+local Camera = workspace.CurrentCamera
+
+-- Set NIGGER. 
+SilentAimFOVCircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2 - (game:GetService("GuiService"):GetGuiInset().Y / 2))
+
+-- type shhh
+local function getClosestPlayerToCenter()
+    local centerScreenPosition = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2 - (game:GetService("GuiService"):GetGuiInset().Y / 2))
+    local closestPlayer
+    local closestDistance = math.huge
+    local localPlayer = game.Players.LocalPlayer
+
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local playerRootPart = player.Character.HumanoidRootPart
+            local screenPosition, onScreen = workspace.CurrentCamera:WorldToViewportPoint(playerRootPart.Position)
+
+            if onScreen then
+                local distance = (centerScreenPosition - Vector2.new(screenPosition.X, screenPosition.Y)).Magnitude
+
+                if distance < closestDistance and distance <= SilentAimFOVCircle.Radius then
+                    closestPlayer = player
+                    closestDistance = distance
+                end
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+local SilentTarget = nil
+
+-- stfu nigger
+game:GetService("RunService").RenderStepped:Connect(function()
+    SilentTarget = getClosestPlayerToCenter()
+
+    -- Update FOV so u can put ur bitches
+    SilentAimFOVCircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2 - (game:GetService("GuiService"):GetGuiInset().Y / 2))
+
+    -- line stigmas 
+    if SilentTarget and SilentTarget.Character and SilentTarget.Character:FindFirstChild("HumanoidRootPart") then
+        local playerRootPart = SilentTarget.Character.HumanoidRootPart
+        local screenPosition, onScreen = workspace.CurrentCamera:WorldToViewportPoint(playerRootPart.Position)
+
+        if onScreen then
+            Line.Visible = true
+            Line.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2 - (game:GetService("GuiService"):GetGuiInset().Y / 2))
+            Line.To = Vector2.new(screenPosition.X, screenPosition.Y)
+
+            -- highlight u faking nigger stop stalking
+            local boxSize = Vector2.new(50, 50)  -- adjust as much as u want cus u sigma
+            HighlightBox.Size = boxSize
+            HighlightBox.Position = Vector2.new(screenPosition.X - boxSize.X / 2, screenPosition.Y - boxSize.Y / 2)
+            HighlightBox.Visible = true
+        else
+            Line.Visible = false
+            HighlightBox.Visible = false
+        end
+    else
+        Line.Visible = false
+        HighlightBox.Visible = false
+    end
+end)
+
+-- Why DID U REDDEEM ITT
+local mt = getrawmetatable(game)
+local old = mt.__namecall
+setreadonly(mt, false)
+mt.__namecall = newcclosure(function(...)
+    local args = {...}
+    if getgenv().Enabled and SilentTarget ~= nil and SilentTarget.Character and getnamecallmethod() == "FireServer" and args[2] == "UpdateMousePos" then
+        args[3] = SilentTarget.Character[getgenv().HitPart].Position + (SilentTarget.Character[getgenv().HitPart].Velocity * getgenv().Prediction)
+        return old(unpack(args))
+    end
+    return old(...)
+end)
+
+-- nuggets 
+showNotification()
+
+-- Send a notification with credits
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Credits";
+    Text = " Dukeshadow streamableV3";
+    Duration = 5;
+})
