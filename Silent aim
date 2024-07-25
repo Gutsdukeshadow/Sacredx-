@@ -1,0 +1,19 @@
+getgenv().Silent = {
+    Settings = {
+        Enabled = true,
+        AimPart = "UpperTorso",
+        Prediction = 0.159748979134,
+        WallCheck = true,
+        Visualize = true,
+        AutoPrediction = true,
+    },
+    FOV = {
+        Enabled = true,
+        Size = 30,
+        Filled = false,
+        Thickness = 0.66,
+        Transparency = 0.9,
+        Color = Color3.fromRGB(255,255,255),
+    },
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/CyberPlaysYT/Aura-x/main/Source", true))()
